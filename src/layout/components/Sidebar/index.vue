@@ -31,7 +31,8 @@ export default {
       'sidebar'
     ]),
     routes() {
-      return this.$router.options.routes
+      // return this.$router.options.routes
+      return this.$router.options.routes.concat(global.antRouter) // 把路由concat进去
     },
     activeMenu() {
       const route = this.$route

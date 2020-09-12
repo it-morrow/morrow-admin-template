@@ -6,7 +6,8 @@ const getDefaultState = () => {
   return {
     token: getToken(),
     name: '',
-    avatar: ''
+    avatar: '',
+    menus: '' // 新增
   }
 }
 
@@ -24,6 +25,10 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
+  },
+  // 新增
+  SET_MENUS: (state, menus) => {
+    state.menus = menus
   }
 }
 
@@ -55,8 +60,58 @@ const actions = {
 
         const { name, avatar } = data
 
+        // 模拟请求数据
+        const menus = [
+          {
+            'path': '/system',
+            'redirect': '/menu',
+            'component': 'Layout',
+            'meta': {
+              'title': '系统管理',
+              'icon': 'form'
+            },
+            'children': [{
+              'path': '/menu',
+              'name': 'menu',
+              'component': 'menu/index',
+              'meta': {
+                'title': '菜单管理',
+                'icon': 'table'
+              }
+            }, {
+              'path': '/roles',
+              'name': 'roles',
+              'component': 'roles/index',
+              'meta': {
+                'title': '角色管理',
+                'icon': 'table'
+              }
+            }, {
+              'path': '/user',
+              'name': 'user',
+              'component': 'user/index',
+              'meta': {
+                'title': '用户管理',
+                'icon': 'table'
+              }
+            }
+            ]
+          }
+
+        ]
+        // 如果需要404 页面，请在此处添加
+        menus.push({
+          path: '/404',
+          component: '404',
+          hidden: true
+        }, {
+          path: '*',
+          redirect: '/404',
+          hidden: true
+        })
         commit('SET_NAME', name)
         commit('SET_AVATAR', avatar)
+        commit('SET_MENUS', menus)
         resolve(data)
       }).catch(error => {
         reject(error)
